@@ -15,10 +15,9 @@ DIRECTIONS = {
     'Right': 1
 }
 
-random.seed(123)
 
 class BubbleShooter:
-    
+
     def __init__(self, canvas, score_label):
         self.canvas = canvas
         self.score_label = score_label
@@ -42,18 +41,18 @@ class BubbleShooter:
         direction_vector /= direction_vector.length()
         # bullet_location = gun_location + time * direction_vector
         self.bullet[0], self.bullet[1] = self.gun[1] + self.time * direction_vector
-        
+
         if (
             not 0 < self.bullet[0] < SCREEN_WIDTH * 20 or
             not 0 < self.bullet[1] < SCREEN_HEIGHT * 20
         ):
             self.new_round()
             return
-        
+
         self.canvas.delete('bullet')
         self.draw_bullet()
         self.time += 0.2
-        
+
         if not self.bullet_is_about_to_collide():
             self.canvas.after(10, self.shoot)
         else:
@@ -118,7 +117,7 @@ class BubbleShooter:
                 (x + 1, y),
                 (x - 0.5, y + 1),
                 (x + 0.5, y + 1)
-            ] 
+            ]
         }
 
         surroundings = {
@@ -150,7 +149,7 @@ class BubbleShooter:
         self.canvas.delete('bullet')
         self.bullet = self.make_bullet()
         self.draw_bullet()
-        
+
     def make_gun(self):
         return [
             Vector(SCREEN_WIDTH // 2 , 0),
@@ -180,14 +179,14 @@ class BubbleShooter:
                     (x + 1) * SCALE, (y + 1) * SCALE,
                     fill=info['color'], tags=['bubble']
                 )
-    
+
     def draw_bullet(self):
         self.canvas.create_oval(
             self.bullet[0] * SCALE, self.bullet[1] * SCALE,
             (self.bullet[0] + 1) * SCALE, (self.bullet[1] + 1) * SCALE,
             fill=self.bullet[2], tags=['bullet']
         )
-    
+
     def draw_gun(self):
         self.canvas.create_line(
             self.gun[0].x * SCALE, self.gun[0].y * SCALE,
@@ -197,11 +196,11 @@ class BubbleShooter:
 
 
 class Vector:
-    
+
     def __init__(self, x, y):
         self.x = x
         self.y = y
-   
+
     def __add__(self, vector):
         return Vector(self.x + vector.x, self.y + vector.y)
 
@@ -210,14 +209,14 @@ class Vector:
 
     def __rmul__(self, scalar):
         return Vector(self.x * scalar, self.y * scalar)
-    
+
     def __truediv__(self, scalar):
         return Vector(self.x / scalar, self.y / scalar)
-    
+
     def length(self):
         return math.hypot(self.x, self.y)
-    
-    def __iter__(self): 
+
+    def __iter__(self):
         yield self.x
         yield self.y
 
